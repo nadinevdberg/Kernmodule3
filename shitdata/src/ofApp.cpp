@@ -3,6 +3,7 @@
 
 void ofApp::setup() {
 	ofSetCircleResolution(50);
+	ofSetBackgroundColor(ofColor::black);
 
 	font.load("gilroy-light.otf", 64);
 
@@ -13,7 +14,7 @@ void ofApp::setup() {
 	populationQuery = new SQLite::Statement(*db, "SELECT * FROM population WHERE year=?");
 	healthQuery = new SQLite::Statement(*db, "SELECT * FROM lifeexp WHERE year=?");
 	incomeQuery = new SQLite::Statement(*db, "SELECT * FROM income WHERE year=?");
-	regionQuery = new SQLite::Statement(*db, "SELECT * FROM region");
+
 
 
 	// selecteer het min en max jaar uit de database
@@ -64,10 +65,10 @@ void ofApp::update() {
 			incomeByCountry[country] = incomeQuery->getColumn("income").getDouble();
 		}
 
-		while (regionQuery->executeStep()) {
-			const string& country = regionQuery->getColumn("country");
-			const string& region = regionQuery->getColumn("region");
-		}
+		//while (regionQuery->executeStep()) {
+		//	const string& country = regionQuery->getColumn("country");
+		//	const string& region = regionQuery->getColumn("region");
+		//}
 
 
 		incomeQuery->reset(); // zet de query weer terug naar de beginstand (met ?)
@@ -75,41 +76,65 @@ void ofApp::update() {
 }
 
 void ofApp::draw() {
-	ofSetColor(ofColor::black);
+	ofSetColor(ofColor::khaki);
 	font.drawString(ofToString(currentYear), ofGetWidth() - 300, ofGetHeight() / 2);
 
 	// loop per land door de lijst populationByCountry heen
 	for (auto& countryAndPopulation : populationByCountry) {
 		string country = countryAndPopulation.first;
 
-		double population = populationByCountry[country];
-		double health = healthByCountry[country];
-		double income = incomeByCountry[country];
+		//Hier komt Jelle's hulp erbij
+		SQLite::Statement regionQuery(*db, "SELECT * FROM region WHERE country=?");
 
-		/*
-				ofLog() << "country=" << country
-						<< " pop=" << population
-						<< " health=" << health
-						<< " income=" << income << endl;
-		*/
+		regionQuery.bind(1, country);
 
-		if (population > 0 && health > 0 && income > 0) { // niet alle waarden bestaan in de db
-			ofSetColor(ofColor::orangeRed);
-			ofNoFill();
-			ofDrawCircle(ofMap(income, 0, maxIncome, 100, ofGetWidth() - 100),
-				ofMap(health, 0, maxHealth, ofGetHeight() - 100, 100),
-				ofMap(population, 0, maxPopulation, 10, 200));
+		while (regionQuery.executeStep()) {
 
+			region = regionQuery.getColumn("region").getText();
+			double population = populationByCountry[country];
+			double health = healthByCountry[country];
+			double income = incomeByCountry[country];
+
+
+			if (population > 0 && health > 0 && income > 0) { // niet alle waarden bestaan in de db
+				if (region == "America") {
+					ofSetColor(ofColor::sandyBrown);
+				}
+				if (region == "Sub-Saharan Africa") {
+					ofSetColor(ofColor::salmon);
+				}
+				if (region == "'South Asia") {
+					ofSetColor(ofColor::lightBlue);
+				}
+				if (region == "Middle East & North Africa") {
+					ofSetColor(ofColor::peachPuff);
+				}
+				if (region == "Europe & Central Asia") {
+					ofSetColor(ofColor::ivory);
+				}
+				if (region == "East Asia & Pacific") {
+					ofSetColor(ofColor::lightCoral);
+				}
+
+
+				ofNoFill();
+				ofDrawCircle(ofMap(income, 0, maxIncome, 100, ofGetWidth() - 100),
+					ofMap(health, 0, maxHealth, ofGetHeight() - 100, 100),
+					ofMap(population, 0, maxPopulation, 10, 200));
+
+
+			}
+			else {
+				/*
+							ofLog() << "incomplete data for country=" << country
+									<< " pop=" << population
+									<< " health=" << health
+									<< " income=" << income << endl;
+				*/
+			}
 
 		}
-		else {
-			/*
-						ofLog() << "incomplete data for country=" << country
-								<< " pop=" << population
-								<< " health=" << health
-								<< " income=" << income << endl;
-			*/
-		}
+		regionQuery.reset();
 	}
 }
 

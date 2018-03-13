@@ -1,0 +1,9 @@
+Wat wil ik?
+1. Ik wil dat het scherm begint met een outline van mijn hoofdpersoon, aan de rechterkant en 3 datablokken aan de linkerkant namelijk: zelfbeeld, eenzaamheid en impact
+2. als de gebruiker een lelijke opmerking hardop uitspreekt wil ik dat er een lijn toegevoegd wordt in de outline van mijn hoofdpersoon
+	eventueel wil ik dit doen met keyboard, in plaats van hardop uitspreken
+	als er een toets ingedrukt wordt:
+	- speel geluid af
+	- voeg lijn toe
+3. als er X aantal lelijke opmerkingen zijn gemaakt, wil ik dat de houding van de silhouet veranderd
+4. als er max aantal lelijke opmerkingen zijn gemaakt, wil ik max aantal lijnen en extreme houding

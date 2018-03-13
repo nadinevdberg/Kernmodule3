@@ -28,15 +28,16 @@ private:
 	map<string, double> populationByCountry;
 	map<string, double> healthByCountry;
 	map<string, double> incomeByCountry;
-	map<string, string> regionPerCountry;
+	/*map<string, string> regionPerCountry;*/
 
 	SQLite::Database* db;
 	SQLite::Statement* populationQuery;
 	SQLite::Statement* healthQuery;
 	SQLite::Statement* incomeQuery;
-	SQLite::Statement* regionQuery;
+	//SQLite::Statement* regionQuery;
 
 	double maxHealth;
 	double maxIncome;
 	int maxPopulation;
+	string region;
 };
