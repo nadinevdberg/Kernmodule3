@@ -25,6 +25,8 @@ private:
 	ofTrueTypeFont subtitleFont;
 	ofTrueTypeFont baseFont;
 
+	ofImage placeHolder;
+
 
 		
 };

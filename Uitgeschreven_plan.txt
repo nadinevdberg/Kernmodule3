@@ -1,9 +1,11 @@
 Wat wil ik?
-1. Ik wil dat het scherm begint met een outline van mijn hoofdpersoon, aan de rechterkant en 3 datablokken aan de linkerkant namelijk: zelfbeeld, eenzaamheid en impact
-2. als de gebruiker een lelijke opmerking hardop uitspreekt wil ik dat er een lijn toegevoegd wordt in de outline van mijn hoofdpersoon
-	eventueel wil ik dit doen met keyboard, in plaats van hardop uitspreken
+1. Ik wil dat het scherm begint met een outline van mijn hoofdpersoon, aan de rechterkant en 3 datablokken aan de linkerkant namelijk: self image, depression en performance. 
+   De kleuren moeten licht zijn (wit met zwarte vormen)
+2. als de gebruiker een lelijke opmerking hardop uitspreekt wil ik dat er een lijn toegevoegd wordt in de outline van mijn hoofdpersoon en dat de progressiebalk in waarde veranderd. 
+	eventueel wil ik dit doen met keyboard, in plaats van hardop uitspreken, waarbij de key's gelijk staan aan uitspraken
 	als er een toets ingedrukt wordt:
 	- speel geluid af
 	- voeg lijn toe
-3. als er X aantal lelijke opmerkingen zijn gemaakt, wil ik dat de houding van de silhouet veranderd
-4. als er max aantal lelijke opmerkingen zijn gemaakt, wil ik max aantal lijnen en extreme houding
+	- pas balk in breedte aan
+3. als er X aantal lelijke opmerkingen zijn gemaakt, wil ik dat de houding van de silhouet veranderd en de kleuren veranderen naar een donkerder schema
+4. als er max aantal lelijke opmerkingen zijn gemaakt, wil ik max aantal lijnen en extreme houding en een donker kleurenschema 

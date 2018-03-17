@@ -11,7 +11,7 @@ void ofApp::setup() {
 	minBarLength = 1;
 	currentSelfImageValue = 1;
 
-
+	placeHolder.load("placeholder.jpg");	
 }
 
 //--------------------------------------------------------------
@@ -67,21 +67,21 @@ void ofApp::draw() {
 	baseFont.drawString("High", 500, 796);
 
 	//Image placeholder
-	ofFill();
-	ofSetColor(20, 20, 20);
-	ofDrawRectangle(640, 70, 1000, 765);
+
+	placeHolder.draw(640, 70);
+
+//	ofFill();
+	//ofSetColor(20, 20, 20);
+	
+	//ofDrawRectangle(640, 70, 1000, 765);
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 	if (currentSelfImageValue <= maxBarLength) {
 		if (key == ' ') {
-			currentSelfImageValue = ofLerp(currentSelfImageValue, currentSelfImageValue + 15, 0.2);
-			//currentSelfImageValue += 5;
-
-			// Hoe werkt ofLerp ook alweer....
-		/*	newSelfImageValue = currentSelfImageValue += 5;
-			currentSelfImageValue = ofLerp(currentSelfImageValue, newSelfImageValue, 0.2);*/
+			currentSelfImageValue += 10;
+			//currentSelfImageValue = ofLerp(currentSelfImageValue, currentSelfImageValue + 20, 0.1);
 		}
 	}
 }
