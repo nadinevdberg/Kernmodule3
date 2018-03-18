@@ -2,7 +2,10 @@
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-	ofSetBackgroundColor(ofColor::black);
+
+
+
+	//ofSetBackgroundColor(ofColor::white);
 	titleFont.load("SinkinSans-700Bold.otf", 30);
 	subtitleFont.load("SinkinSans-300Light.otf", 15);
 	baseFont.load("SinkinSans-200XLight.otf", 12);
@@ -10,13 +13,32 @@ void ofApp::setup() {
 	maxBarLength = 467;
 	minBarLength = 1;
 	currentSelfImageValue = 1;
+	currentDepression = 1;
+	currentPerformance = 1;
 
-	placeHolder.load("placeholder.jpg");	
+	placeHolder.load("placeholder.jpg");
+
+
+	for (int i = 0; i < 3; i++) {
+		ofLog() << "L O A D I N G    I M A G E " << i << endl;
+		imageList[i].load(ofToString(i) + ".jpg");
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
+	totalImpact = currentSelfImageValue + currentDepression + currentPerformance;
+	//ofLog() << "Total Impact = " << totalImpact << endl;
 
+	if (showImage1 == true) {
+		ofSetBackgroundColor(ofColor::lightGray);
+	}
+	if (showImage2 == true) {
+		ofSetBackgroundColor(ofColor::gray);
+	}
+	if (showImage3 == true) {
+		ofSetBackgroundColor(ofColor::black);
+	}
 }
 
 //--------------------------------------------------------------
@@ -38,7 +60,7 @@ void ofApp::draw() {
 	ofSetColor(191, 191, 191);
 	subtitleFont.drawString("Self image", 87, 337);
 	ofNoFill();
-	ofDrawRectangle(87, 357, 475, 30); // placeholder progressbar
+	ofDrawRectangle(87, 357, 475, 30); // outline progressbar
 	ofFill();
 	ofDrawRectangle(90, 359.5, currentSelfImageValue, 25); //dit zou de maximale grootte van de balk zijn, waarbij '470' van waarde gaat veranderen en bij 1 zal beginnen
 	baseFont.drawString("Positive", 87, 412);
@@ -51,7 +73,9 @@ void ofApp::draw() {
 	ofSetColor(191, 191, 191);
 	subtitleFont.drawString("Depression", 87, 529);
 	ofNoFill();
-	ofDrawRectangle(87, 549, 475, 30); // placeholder progressbar
+	ofDrawRectangle(87, 549, 475, 30); // outline progressbar
+	ofFill();
+	ofDrawRectangle(90, 551.5, currentDepression, 25);
 	baseFont.drawString("Low", 87, 604);
 	baseFont.drawString("High", 500, 604);
 
@@ -62,26 +86,62 @@ void ofApp::draw() {
 	ofSetColor(191, 191, 191);
 	subtitleFont.drawString("Performace", 87, 721);
 	ofNoFill();
-	ofDrawRectangle(87, 741, 475, 30); // placeholder progressbar
+	ofDrawRectangle(87, 741, 475, 30); // outline progressbar
+	ofFill();
+	ofDrawRectangle(90, 743.5, currentPerformance, 25);
 	baseFont.drawString("Low", 87, 796);
 	baseFont.drawString("High", 500, 796);
 
-	//Image placeholder
+	if (showImage1 == true) {
 
-	placeHolder.draw(640, 70);
-
-//	ofFill();
-	//ofSetColor(20, 20, 20);
+		imageList[0].draw(640, 70);
+	}
 	
-	//ofDrawRectangle(640, 70, 1000, 765);
+	if (showImage2 == true) {
+		imageList[1].draw(640, 70);
+	}
+
+	if (showImage3 == true) {
+		
+		imageList[2].draw(640, 70);
+	}
+
+
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
-	if (currentSelfImageValue <= maxBarLength) {
-		if (key == ' ') {
-			currentSelfImageValue += 10;
+
+	if (key == ' ') {
+		if (currentSelfImageValue <= maxBarLength) {
+			currentSelfImageValue += ofRandom(0, 10);
 			//currentSelfImageValue = ofLerp(currentSelfImageValue, currentSelfImageValue + 20, 0.1);
 		}
+		if (currentDepression <= maxBarLength) {
+			currentDepression += ofRandom(0, 10);
+		}
+		if (currentPerformance <= maxBarLength) {
+			currentPerformance += ofRandom(0, 10);
+		}
+	}
+
+
+	if (key == '1') {
+		showImage1 = true;
+		showImage2 = false;
+		showImage3 = false;
+		ofLog() << "D R A W I N G" << endl;
+	}
+
+	if (key == '2') {
+		showImage2 = true;
+		showImage1 = false;
+		showImage3 = false;
+	}
+
+	if (key == '3') {
+		showImage1 = false;
+		showImage2 = false;
+		showImage3 = true;
 	}
 }
