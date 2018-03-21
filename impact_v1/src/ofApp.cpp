@@ -16,17 +16,29 @@ void ofApp::setup() {
 	currentDepression = 1;
 	currentPerformance = 1;
 
-	placeHolder.load("placeholder.jpg");
+	newSelfImage = 0;
 
-
+	//images inladen
 	for (int i = 0; i < 3; i++) {
 		ofLog() << "L O A D I N G    I M A G E " << i << endl;
 		imageList[i].load(ofToString(i) + ".jpg");
 	}
+
+	//audio inladen
+	for (int i = 0; i < AUDIOFILES; i++) {
+		soundPlayer[i].load(ofToDataPath(ofToString(i + 1) + ".mp3"));
+		soundPlayer[i].setLoop(true);
+
+		soundPlayer[i].play();
+		soundPlayer[i].setPaused(true);
+	}
+
+	ofSoundSetVolume(0.5);
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
+	ofSoundUpdate();
 	totalImpact = currentSelfImageValue + currentDepression + currentPerformance;
 	//ofLog() << "Total Impact = " << totalImpact << endl;
 
@@ -55,6 +67,7 @@ void ofApp::draw() {
  this monitor will show you what \nhappens on the inside.", 87, 165);
 
 	//Self Image
+	currentSelfImageValue = ofLerp(currentSelfImageValue, newSelfImage, 0.2);
 	ofSetColor(20, 20, 20);
 	ofDrawRectangle(50, 291, 550, 160); //BG
 	ofSetColor(191, 191, 191);
@@ -66,7 +79,8 @@ void ofApp::draw() {
 	baseFont.drawString("Positive", 87, 412);
 	baseFont.drawString("Negative", 487, 412);
 
-	//Depression
+	//Depression	
+	currentDepression = ofLerp(currentDepression, newDepression, 0.2);
 	ofFill();
 	ofSetColor(20, 20, 20);
 	ofDrawRectangle(50, 483, 550, 160); //BG
@@ -80,6 +94,7 @@ void ofApp::draw() {
 	baseFont.drawString("High", 500, 604);
 
 	//Performance
+	currentPerformance = ofLerp(currentPerformance, newPerformance, 0.2);
 	ofFill();
 	ofSetColor(20, 20, 20);
 	ofDrawRectangle(50, 675, 550, 160); //BG
@@ -96,13 +111,13 @@ void ofApp::draw() {
 
 		imageList[0].draw(640, 70);
 	}
-	
+
 	if (showImage2 == true) {
 		imageList[1].draw(640, 70);
 	}
 
 	if (showImage3 == true) {
-		
+
 		imageList[2].draw(640, 70);
 	}
 
@@ -113,15 +128,19 @@ void ofApp::draw() {
 void ofApp::keyPressed(int key) {
 
 	if (key == ' ') {
+		randomNumber = ofRandom(AUDIOFILES);
+		playing[randomNumber] = !playing[randomNumber];
+		soundPlayer[randomNumber].setPaused(playing[randomNumber]);
+		ofLog() << "soundPLayer should now be playing: " << randomNumber << endl;
+
 		if (currentSelfImageValue <= maxBarLength) {
-			currentSelfImageValue += ofRandom(0, 10);
-			//currentSelfImageValue = ofLerp(currentSelfImageValue, currentSelfImageValue + 20, 0.1);
+			newSelfImage = currentSelfImageValue + ofRandom(0, 20);
 		}
 		if (currentDepression <= maxBarLength) {
-			currentDepression += ofRandom(0, 10);
+			newDepression =	currentDepression += ofRandom(0, 20);
 		}
 		if (currentPerformance <= maxBarLength) {
-			currentPerformance += ofRandom(0, 10);
+			newPerformance = currentPerformance += ofRandom(0, 20);
 		}
 	}
 
@@ -144,4 +163,6 @@ void ofApp::keyPressed(int key) {
 		showImage2 = false;
 		showImage3 = true;
 	}
+
+
 }
