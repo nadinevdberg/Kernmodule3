@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
+#include "SQLiteCpp.h"
+
 #define IMAGES 3
 #define AUDIOFILES 13
 

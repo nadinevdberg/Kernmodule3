@@ -27,7 +27,7 @@ void ofApp::setup() {
 	//audio inladen
 	for (int i = 0; i < AUDIOFILES; i++) {
 		soundPlayer[i].load(ofToDataPath(ofToString(i + 1) + ".mp3"));
-		soundPlayer[i].setLoop(true);
+		//soundPlayer[i].setLoop(true);
 
 		soundPlayer[i].play();
 		soundPlayer[i].setPaused(true);
