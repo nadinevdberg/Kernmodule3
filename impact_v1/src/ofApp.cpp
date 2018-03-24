@@ -61,7 +61,7 @@ void ofApp::update() {
 	}
 
 
-	SQLite::Statement query(*db, "SELECT * FROM impact WHERE key=?");
+	
 	
 
 
@@ -141,7 +141,7 @@ void ofApp::draw() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
-	
+	SQLite::Statement query(*db, "SELECT * FROM impact WHERE key=?");
 	
 
 
