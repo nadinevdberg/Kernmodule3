@@ -2,29 +2,36 @@
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+	//set up the database
+	string databasePath = ofToDataPath("pesten.db", true);
+	db = new SQLite::Database(databasePath);
 
-
-
-	//ofSetBackgroundColor(ofColor::white);
+	//Load in all fonts
 	titleFont.load("SinkinSans-700Bold.otf", 30);
 	subtitleFont.load("SinkinSans-300Light.otf", 15);
 	baseFont.load("SinkinSans-200XLight.otf", 12);
 	baseFont.setLineHeight(25);
+
+	// set size for bars
 	maxBarLength = 467;
 	minBarLength = 1;
+
+	// set variabels for bars
 	currentSelfImageValue = 1;
 	currentDepression = 1;
 	currentPerformance = 1;
 
 	newSelfImage = 0;
+	newDepression = 0;
+	newPerformance = 0;
 
-	//images inladen
+	//load images
 	for (int i = 0; i < 3; i++) {
 		ofLog() << "L O A D I N G    I M A G E " << i << endl;
 		imageList[i].load(ofToString(i) + ".jpg");
 	}
 
-	//audio inladen
+	//set up audio
 	for (int i = 0; i < AUDIOFILES; i++) {
 		soundPlayer[i].load(ofToDataPath(ofToString(i + 1) + ".mp3"));
 		//soundPlayer[i].setLoop(true);
@@ -32,8 +39,9 @@ void ofApp::setup() {
 		soundPlayer[i].play();
 		soundPlayer[i].setPaused(true);
 	}
+	ofSoundSetVolume(0.9);
 
-	ofSoundSetVolume(0.5);
+
 }
 
 //--------------------------------------------------------------
@@ -68,6 +76,7 @@ void ofApp::draw() {
 
 	//Self Image
 	currentSelfImageValue = ofLerp(currentSelfImageValue, newSelfImage, 0.2);
+
 	ofSetColor(20, 20, 20);
 	ofDrawRectangle(50, 291, 550, 160); //BG
 	ofSetColor(191, 191, 191);
@@ -75,7 +84,7 @@ void ofApp::draw() {
 	ofNoFill();
 	ofDrawRectangle(87, 357, 475, 30); // outline progressbar
 	ofFill();
-	ofDrawRectangle(90, 359.5, currentSelfImageValue, 25); //dit zou de maximale grootte van de balk zijn, waarbij '470' van waarde gaat veranderen en bij 1 zal beginnen
+	ofDrawRectangle(90, 359.5, ofMap(currentSelfImageValue, 0, 100, 1, maxBarLength), 25);
 	baseFont.drawString("Positive", 87, 412);
 	baseFont.drawString("Negative", 487, 412);
 
@@ -89,7 +98,7 @@ void ofApp::draw() {
 	ofNoFill();
 	ofDrawRectangle(87, 549, 475, 30); // outline progressbar
 	ofFill();
-	ofDrawRectangle(90, 551.5, currentDepression, 25);
+	ofDrawRectangle(90, 551.5, ofMap(currentDepression, 0, 100, 1, maxBarLength), 25);
 	baseFont.drawString("Low", 87, 604);
 	baseFont.drawString("High", 500, 604);
 
@@ -103,7 +112,7 @@ void ofApp::draw() {
 	ofNoFill();
 	ofDrawRectangle(87, 741, 475, 30); // outline progressbar
 	ofFill();
-	ofDrawRectangle(90, 743.5, currentPerformance, 25);
+	ofDrawRectangle(90, 743.5, ofMap(currentPerformance, 0, 100, 1, maxBarLength), 25);
 	baseFont.drawString("Low", 87, 796);
 	baseFont.drawString("High", 500, 796);
 
@@ -126,6 +135,9 @@ void ofApp::draw() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
+	SQLite::Statement query(*db, "SELECT * FROM impact WHERE key=?");
+
+
 
 	if (key == ' ') {
 		randomNumber = ofRandom(AUDIOFILES);
@@ -133,14 +145,24 @@ void ofApp::keyPressed(int key) {
 		soundPlayer[randomNumber].setPaused(playing[randomNumber]);
 		ofLog() << "soundPLayer should now be playing: " << randomNumber << endl;
 
-		if (currentSelfImageValue <= maxBarLength) {
-			newSelfImage = currentSelfImageValue + ofRandom(0, 20);
+
+		if (currentSelfImageValue < 100) {
+			newSelfImage = currentSelfImageValue + ofRandom(0, 15);
+			if (currentSelfImageValue >= 100) {
+				currentSelfImageValue = 100;
+			}
 		}
-		if (currentDepression <= maxBarLength) {
-			newDepression =	currentDepression += ofRandom(0, 20);
+		if (currentDepression < 100) {
+			newDepression = currentDepression += ofRandom(0, 15);
+			if (currentDepression >= 100) {
+				currentDepression = 100;
+			}
 		}
-		if (currentPerformance <= maxBarLength) {
-			newPerformance = currentPerformance += ofRandom(0, 20);
+		if (currentPerformance < 100) {
+			newPerformance = currentPerformance += ofRandom(0, 15);
+			if (currentPerformance >= 100) {
+				currentPerformance = 100;
+			}
 		}
 	}
 

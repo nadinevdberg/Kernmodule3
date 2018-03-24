@@ -20,10 +20,7 @@ private:
 	int minBarLength;
 	int totalImpact;
 
-	float selfImageValue;
-	float currentSelfImageValue;
-	float newSelfImageValue;
-	float increment;
+
 
 	float currentPerformance;
 
@@ -34,9 +31,12 @@ private:
 	int randomNumber;
 
 	float newSelfImage;
-	float newDepression = 0;
-	float newPerformance = 0;
+	float newDepression;
+	float newPerformance;
 
+	float selfImageValue;
+	float currentSelfImageValue;
+	float newSelfImageValue;
 
 	ofTrueTypeFont titleFont;
 	ofTrueTypeFont subtitleFont;
