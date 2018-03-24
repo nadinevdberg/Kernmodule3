@@ -142,6 +142,12 @@ void ofApp::draw() {
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 	SQLite::Statement query(*db, "SELECT * FROM impact WHERE key=?");
+
+	if (key == 'r') {
+		//haal data uit database
+		// pas waardes aan
+		// speel audio
+	}
 	
 
 
