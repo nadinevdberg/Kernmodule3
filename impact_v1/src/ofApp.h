@@ -34,9 +34,10 @@ private:
 	float newDepression;
 	float newPerformance;
 
-	float selfImageValue;
+	int selfImageValue;
 	float currentSelfImageValue;
 	float newSelfImageValue;
+
 
 	ofTrueTypeFont titleFont;
 	ofTrueTypeFont subtitleFont;
