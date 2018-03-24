@@ -61,8 +61,8 @@ void ofApp::update() {
 	}
 
 
-	
-	
+
+
 
 
 }
@@ -143,16 +143,16 @@ void ofApp::draw() {
 void ofApp::keyPressed(int key) {
 	SQLite::Statement query(*db, "SELECT * FROM impact WHERE key=?");
 	query.bind(1, key);
-
-	if (key == 'r') {
-		//haal data uit database
-		// pas waardes aan
-		// speel audio
-
+	while (query.executeStep()) {
+		if (key == 'r') {
+			//haal data uit database
+			// pas waardes aan
+			// speel audio
+			ofLog() << "current keypressed == " << key << endl;
+			selfImageValue = query.getColumn("zelfbeeld").getInt();
+		}
 
 	}
-	
-
 
 	if (key == ' ') {
 		randomNumber = ofRandom(AUDIOFILES);
