@@ -32,14 +32,14 @@ void ofApp::setup() {
 	}
 
 	//set up audio
-	for (int i = 0; i < AUDIOFILES; i++) {
-		soundPlayer[i].load(ofToDataPath(ofToString(i + 1) + ".mp3"));
-		//soundPlayer[i].setLoop(true);
+	//for (int i = 0; i < AUDIOFILES; i++) {
+	//	soundPlayer[i].load(ofToDataPath(ofToString(i + 1) + ".mp3"));
+	//	//soundPlayer[i].setLoop(true);
 
-		soundPlayer[i].play();
-		soundPlayer[i].setPaused(true);
-	}
-	ofSoundSetVolume(0.9);
+	//	soundPlayer[i].play();
+	//	soundPlayer[i].setPaused(true);
+	//}
+	//ofSoundSetVolume(0.9);
 
 
 }
@@ -50,6 +50,13 @@ void ofApp::update() {
 	totalImpact = currentSelfImageValue + currentDepression + currentPerformance;
 	//ofLog() << "Total Impact = " << totalImpact << endl;
 
+	if (totalImpact <= 20) {
+		showImage1 == true;
+	}
+	if (totalImpact > 20 && totalImpact <= 40) {
+
+	}
+
 	if (showImage1 == true) {
 		ofSetBackgroundColor(ofColor::lightGray);
 	}
@@ -59,10 +66,6 @@ void ofApp::update() {
 	if (showImage3 == true) {
 		ofSetBackgroundColor(ofColor::black);
 	}
-
-
-
-
 
 
 }
@@ -82,7 +85,6 @@ void ofApp::draw() {
 
 	//Self Image
 	currentSelfImageValue = ofLerp(currentSelfImageValue, newSelfImage, 0.2);
-
 	ofSetColor(20, 20, 20);
 	ofDrawRectangle(50, 291, 550, 160); //BG
 	ofSetColor(191, 191, 191);
@@ -90,7 +92,7 @@ void ofApp::draw() {
 	ofNoFill();
 	ofDrawRectangle(87, 357, 475, 30); // outline progressbar
 	ofFill();
-	ofDrawRectangle(90, 359.5, ofMap(currentSelfImageValue, 0, 100, 1, maxBarLength), 25);
+	ofDrawRectangle(90, 359.5, ofMap(currentSelfImageValue, 0, 100, 1, maxBarLength, true), 25);
 	baseFont.drawString("Positive", 87, 412);
 	baseFont.drawString("Negative", 487, 412);
 
@@ -104,7 +106,7 @@ void ofApp::draw() {
 	ofNoFill();
 	ofDrawRectangle(87, 549, 475, 30); // outline progressbar
 	ofFill();
-	ofDrawRectangle(90, 551.5, ofMap(currentDepression, 0, 100, 1, maxBarLength), 25);
+	ofDrawRectangle(90, 551.5, ofMap(currentDepression, 0, 100, 1, maxBarLength, true), 25);
 	baseFont.drawString("Low", 87, 604);
 	baseFont.drawString("High", 500, 604);
 
@@ -118,7 +120,7 @@ void ofApp::draw() {
 	ofNoFill();
 	ofDrawRectangle(87, 741, 475, 30); // outline progressbar
 	ofFill();
-	ofDrawRectangle(90, 743.5, ofMap(currentPerformance, 0, 100, 1, maxBarLength), 25);
+	ofDrawRectangle(90, 743.5, ofMap(currentPerformance, 0, 100, 1, maxBarLength, true), 25);
 	baseFont.drawString("Low", 87, 796);
 	baseFont.drawString("High", 500, 796);
 
@@ -142,64 +144,59 @@ void ofApp::draw() {
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 	SQLite::Statement query(*db, "SELECT * FROM impact WHERE key=?");
+	ofLog() << key << endl;
 	query.bind(1, key);
 	while (query.executeStep()) {
-		if (key == 'r') {
-			//haal data uit database
-			// pas waardes aan
-			// speel audio
-			ofLog() << "current keypressed == " << key << endl;
-			selfImageValue = query.getColumn("zelfbeeld").getInt();
-		}
+		//ofLog() << "in whileloop" << endl;
+
+		//haal data uit database
+		// pas waardes aan
+		//// speel audio
+
+		//ofLog() << "current keypressed == " << key << endl;
+		selfImageValue = query.getColumn("Zelfbeeld").getInt();
+		performanceValue = query.getColumn("Prestaties").getInt();
+		depressionValue = query.getColumn("Depressiviteit").getInt();
+
+		newSelfImage = currentSelfImageValue + selfImageValue;
+		newDepression = currentDepression += depressionValue;
+		newPerformance = currentPerformance += performanceValue;
+		
+		soundPlayer.load(query.getColumn("Soundfile") + ".mp3");
+		ofLog() << "current sound is" << query.getColumn("Soundfile") << endl;
 
 	}
+
+
 
 	if (key == ' ') {
-		randomNumber = ofRandom(AUDIOFILES);
-		playing[randomNumber] = !playing[randomNumber];
-		soundPlayer[randomNumber].setPaused(playing[randomNumber]);
-		ofLog() << "soundPLayer should now be playing: " << randomNumber << endl;
-
-
-		if (currentSelfImageValue < 100) {
-			newSelfImage = currentSelfImageValue + ofRandom(0, 15);
-			if (currentSelfImageValue >= 100) {
-				currentSelfImageValue = 100;
-			}
-		}
-		if (currentDepression < 100) {
-			newDepression = currentDepression += ofRandom(0, 15);
-			if (currentDepression >= 100) {
-				currentDepression = 100;
-			}
-		}
-		if (currentPerformance < 100) {
-			newPerformance = currentPerformance += ofRandom(0, 15);
-			if (currentPerformance >= 100) {
-				currentPerformance = 100;
-			}
-		}
+		//	randomNumber = ofRandom(AUDIOFILES);
+		//	playing[randomNumber] = !playing[randomNumber];
+		//	soundPlayer[randomNumber].setPaused(playing[randomNumber]);
+		//	ofLog() << "soundPLayer should now be playing: " << randomNumber << endl;
 	}
 
 
-	if (key == '1') {
-		showImage1 = true;
-		showImage2 = false;
-		showImage3 = false;
-		ofLog() << "D R A W I N G" << endl;
-	}
 
-	if (key == '2') {
-		showImage2 = true;
-		showImage1 = false;
-		showImage3 = false;
-	}
 
-	if (key == '3') {
-		showImage1 = false;
-		showImage2 = false;
-		showImage3 = true;
-	}
+	//if (key == '1') {
+	//	showImage1 = true;
+	//	showImage2 = false;
+	//	showImage3 = false;
+	//	ofLog() << "D R A W I N G" << endl;
+	//}
+
+	//if (key == '2') {
+	//	showImage2 = true;
+	//	showImage1 = false;
+	//	showImage3 = false;
+	//}
+
+	//if (key == '3') {
+	//	showImage1 = false;
+	//	showImage2 = false;
+	//	showImage3 = true;
+	//}
 
 
 }

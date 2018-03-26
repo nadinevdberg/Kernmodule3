@@ -22,28 +22,30 @@ private:
 
 
 
+	//ofSoundPlayer soundPlayer[AUDIOFILES];
+	//bool playing[AUDIOFILES];
+	//int randomNumber;
+
+
 	float currentPerformance;
-
+	float currentSelfImageValue;
 	float currentDepression;
-
-	ofSoundPlayer soundPlayer[AUDIOFILES];
-	bool playing[AUDIOFILES];
-	int randomNumber;
 
 	float newSelfImage;
 	float newDepression;
 	float newPerformance;
 
 	int selfImageValue;
-	float currentSelfImageValue;
-	float newSelfImageValue;
+	int depressionValue;
+	int performanceValue;
+
+
+	ofSoundPlayer soundPlayer;
 
 
 	ofTrueTypeFont titleFont;
 	ofTrueTypeFont subtitleFont;
 	ofTrueTypeFont baseFont;
-
-	ofImage placeHolder;
 
 	ofImage imageList[IMAGES];
 

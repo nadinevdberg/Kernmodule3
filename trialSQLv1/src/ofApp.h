@@ -15,6 +15,7 @@ public:
 private:
 	float currentSelfImage;
 	SQLite::Database* db;
+	
 
 	string currentKey;
 	string keys[13] = {"r","t", "y", "u", "i", "o", "g", "h", "j", "k", "b", "n", "m"};
