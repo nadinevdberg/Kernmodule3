@@ -12,11 +12,11 @@ void ofApp::setup() {
 	baseFont.load("SinkinSans-200XLight.otf", 12);
 	baseFont.setLineHeight(25);
 
-	// set size for bars
+	// set sizes for bars
 	maxBarLength = 467;
 	minBarLength = 1;
 
-	// set variabels for bars
+	// set start variables for bars and values
 	currentSelfImageValue = 1;
 	currentDepression = 1;
 	currentPerformance = 1;
@@ -26,21 +26,10 @@ void ofApp::setup() {
 	newPerformance = 0;
 
 	//load images
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < IMAGES; i++) {
 		ofLog() << "L O A D I N G    I M A G E " << i << endl;
-		imageList[i].load(ofToString(i) + ".jpg");
+		imageList[i].load("bg" + ofToString(i + 1) + ".jpg");
 	}
-
-	//set up audio
-	//for (int i = 0; i < AUDIOFILES; i++) {
-	//	soundPlayer[i].load(ofToDataPath(ofToString(i + 1) + ".mp3"));
-	//	//soundPlayer[i].setLoop(true);
-
-	//	soundPlayer[i].play();
-	//	soundPlayer[i].setPaused(true);
-	//}
-	//ofSoundSetVolume(0.9);
-
 
 }
 
@@ -50,22 +39,7 @@ void ofApp::update() {
 	totalImpact = currentSelfImageValue + currentDepression + currentPerformance;
 	//ofLog() << "Total Impact = " << totalImpact << endl;
 
-	if (totalImpact <= 20) {
-		showImage1 == true;
-	}
-	if (totalImpact > 20 && totalImpact <= 40) {
 
-	}
-
-	if (showImage1 == true) {
-		ofSetBackgroundColor(ofColor::lightGray);
-	}
-	if (showImage2 == true) {
-		ofSetBackgroundColor(ofColor::gray);
-	}
-	if (showImage3 == true) {
-		ofSetBackgroundColor(ofColor::black);
-	}
 
 
 }
@@ -73,17 +47,50 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw() {
 
+	//pas de achtergrond afbeelding aan aan de hand van de totale waardes. 
+	if (totalImpact <= 20) {
+		imageList[0].draw(0, 0);
+	}
+	else if (totalImpact > 20 && totalImpact <= 40) {
+		imageList[1].draw(0, 0);
+	}
+	else if (totalImpact > 40 && totalImpact <= 60) {
+		imageList[2].draw(0, 0);
+	}
+	else if (totalImpact > 60 && totalImpact <= 80) {
+		imageList[3].draw(0, 0);
+	}
+	else if (totalImpact > 80 && totalImpact <= 100) {
+		imageList[4].draw(0, 0);
+	}
+	else if (totalImpact > 100 && totalImpact <= 120) {
+		imageList[5].draw(0, 0);
+	}
+	else if (totalImpact > 120 && totalImpact <= 140) {
+		imageList[6].draw(0, 0);
+	}
+	else if (totalImpact > 140 && totalImpact <= 160) {
+		imageList[7].draw(0, 0);
+	}
+	else if (totalImpact > 160 && totalImpact <= 180) {
+		imageList[8].draw(0, 0);
+	}
+	else if (totalImpact > 180 && totalImpact <= 300) {
+		imageList[9].draw(0, 0);
+	}
 
-	//Healthmonitor
-	ofFill();
+	//Healthmonitor visuals
+	// kiest de kleur voor de achtergrond van het blok, tekent het blok, kiest vervolgens kleur voor de tekst en tekent de tekst
 	ofSetColor(20, 20, 20);
-	ofDrawRectangle(50, 70, 550, 190); //BG
+	ofFill();
+	ofDrawRectangle(50, 70, 550, 190);
 	ofSetColor(191, 191, 191);
 	titleFont.drawString("HEALTH MONITOR", 87, 140);
 	baseFont.drawString("While we may not see what the impact of our words \nis on the outside,\
  this monitor will show you what \nhappens on the inside.", 87, 165);
 
 	//Self Image
+	//bereken de huidige waarde, zet de kleur voor de achtergrond goed, teken de achtergrondblokken, balken en tekst. dit pas ik ook toe bij depression en performance
 	currentSelfImageValue = ofLerp(currentSelfImageValue, newSelfImage, 0.2);
 	ofSetColor(20, 20, 20);
 	ofDrawRectangle(50, 291, 550, 160); //BG
@@ -124,79 +131,35 @@ void ofApp::draw() {
 	baseFont.drawString("Low", 87, 796);
 	baseFont.drawString("High", 500, 796);
 
-	if (showImage1 == true) {
-
-		imageList[0].draw(640, 70);
-	}
-
-	if (showImage2 == true) {
-		imageList[1].draw(640, 70);
-	}
-
-	if (showImage3 == true) {
-
-		imageList[2].draw(640, 70);
-	}
-
-
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
+
+	//ga naar mijn database en selecteer alles van mijn tabel 'impact' waarbij de key nog onbekend is
 	SQLite::Statement query(*db, "SELECT * FROM impact WHERE key=?");
-	ofLog() << key << endl;
+	
+
+	//vervang het '?' in de query met de ingevoerde key
 	query.bind(1, key);
 	while (query.executeStep()) {
-		//ofLog() << "in whileloop" << endl;
-
-		//haal data uit database
-		// pas waardes aan
-		//// speel audio
-
+		
 		//ofLog() << "current keypressed == " << key << endl;
+		//geef me de waardes per opmerking -- gelinkt aan de key
 		selfImageValue = query.getColumn("Zelfbeeld").getInt();
 		performanceValue = query.getColumn("Prestaties").getInt();
 		depressionValue = query.getColumn("Depressiviteit").getInt();
 
+		//bereken wat de nieuwe waarde wordt 
 		newSelfImage = currentSelfImageValue + selfImageValue;
 		newDepression = currentDepression += depressionValue;
 		newPerformance = currentPerformance += performanceValue;
-		
-		soundPlayer.load(query.getColumn("Soundfile") + ".mp3");
-		ofLog() << "current sound is" << query.getColumn("Soundfile") << endl;
 
+		//speel geluid af, gelinkt aan de key
+		soundPlayer.load(query.getColumn("Soundfile").getText());
+		ofLog() << "current soundfile is " << query.getColumn("Soundfile") << endl;
+		soundPlayer.play();
 	}
-
-
-
-	if (key == ' ') {
-		//	randomNumber = ofRandom(AUDIOFILES);
-		//	playing[randomNumber] = !playing[randomNumber];
-		//	soundPlayer[randomNumber].setPaused(playing[randomNumber]);
-		//	ofLog() << "soundPLayer should now be playing: " << randomNumber << endl;
-	}
-
-
-
-
-	//if (key == '1') {
-	//	showImage1 = true;
-	//	showImage2 = false;
-	//	showImage3 = false;
-	//	ofLog() << "D R A W I N G" << endl;
-	//}
-
-	//if (key == '2') {
-	//	showImage2 = true;
-	//	showImage1 = false;
-	//	showImage3 = false;
-	//}
-
-	//if (key == '3') {
-	//	showImage1 = false;
-	//	showImage2 = false;
-	//	showImage3 = true;
-	//}
 
 
 }

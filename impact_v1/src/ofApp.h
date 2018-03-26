@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "SQLiteCpp.h"
 
-#define IMAGES 3
+#define IMAGES 10
 #define AUDIOFILES 13
 
 class ofApp : public ofBaseApp {
@@ -20,13 +20,6 @@ private:
 	int minBarLength;
 	int totalImpact;
 
-
-
-	//ofSoundPlayer soundPlayer[AUDIOFILES];
-	//bool playing[AUDIOFILES];
-	//int randomNumber;
-
-
 	float currentPerformance;
 	float currentSelfImageValue;
 	float currentDepression;
@@ -39,9 +32,7 @@ private:
 	int depressionValue;
 	int performanceValue;
 
-
 	ofSoundPlayer soundPlayer;
-
 
 	ofTrueTypeFont titleFont;
 	ofTrueTypeFont subtitleFont;
