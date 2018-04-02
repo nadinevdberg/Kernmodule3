@@ -14,6 +14,7 @@ public:
 	void draw();
 
 	void keyPressed(int key);
+	
 
 private:
 	int maxBarLength;

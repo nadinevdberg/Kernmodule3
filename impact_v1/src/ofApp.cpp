@@ -27,10 +27,10 @@ void ofApp::setup() {
 
 	//load images
 	for (int i = 0; i < IMAGES; i++) {
-		ofLog() << "L O A D I N G    I M A G E " << i << endl;
+		//ofLog() << "L O A D I N G    I M A G E " << i << endl;
 		imageList[i].load("bg" + ofToString(i + 1) + ".jpg");
 	}
-
+	
 }
 
 //--------------------------------------------------------------
@@ -123,13 +123,13 @@ void ofApp::draw() {
 	ofSetColor(20, 20, 20);
 	ofDrawRectangle(50, 675, 550, 160); //BG
 	ofSetColor(191, 191, 191);
-	subtitleFont.drawString("Performace", 87, 721);
+	subtitleFont.drawString("Performance", 87, 721);
 	ofNoFill();
 	ofDrawRectangle(87, 741, 475, 30); // outline progressbar
 	ofFill();
 	ofDrawRectangle(90, 743.5, ofMap(currentPerformance, 0, 100, 1, maxBarLength, true), 25);
-	baseFont.drawString("Low", 87, 796);
-	baseFont.drawString("High", 500, 796);
+	baseFont.drawString("High", 87, 796);
+	baseFont.drawString("Low", 500, 796);
 
 }
 
